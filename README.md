@@ -62,70 +62,12 @@ Example Runner Included in folder "DickinsonBros.Encryption.Telemetry"
 
 <h2>Setup</h2>
 
-<h3>Add Nuget References</h3>
+<h3>Add nuget references</h3>
 
     https://www.nuget.org/packages/DickinsonBros.Telemetry
     https://www.nuget.org/packages/DickinsonBros.Telemetry.Abstractions
 
-
-<h3>Create Instance</h3>
-
-```c#
-
-//Options
-var telemetryServiceOptions = new TelemetryServiceOptions
-{
-    Source = "DickinsonBros.Telemtry.Runner",
-    RecordDurableRest = true,
-    RecordSQL = true,
-    RecordQueue = true,
-    RecordAPI = true,
-    RecordEmail = true,
-    ConnectionString = "..."
-};
-var options = Options.Create(telemetryServiceOptions);
-
-//IApplicationLifetime
-var applicationLifetime = new ApplicationLifetime();
-
-//ILogger<T>
-var loggerFactory = LoggerFactory.Create(builder =>
-{
-    builder
-        .AddConsole();
-});
-
-//IRedactorService
-var redactorServiceOptions = new RedactorServiceOptions
-{
-    PropertiesToRedact = new string[] { "Password" },
-    RegexValuesToRedact = new string[] { "Bearer" }
-};
-
-var options = Options.Create(redactorServiceOptions);
-var redactorService = new RedactorService(options);
-
-//ICorrelationService
-var correlationService = new CorrelationService();
-
-//ILoggingService
-
-var telemetrySQLServiceLoggerService = new LoggingService<TelemetrySQLService>(loggerFactory.CreateLogger<TelemetrySQLService>(), redactorService, correlationService);
-var telemetryServiceLoggerService = new LoggingService<TelemetryService>(loggerFactory.CreateLogger<TelemetryService>(), redactorService, correlationService);
-
-
-//ITelemetrySQLService
-var telemetrySQLService = new TelemetrySQLService(telemetrySQLServiceLoggerService);
-
-//ITelemetryDBService
-var telemetryDBService = new TelemetryDBService(options, telemetrySQLService)
-
-//TelemetryService
-var telemetryService = new TelemetryService(options, applicationLifetime, telemetryDBService, loggerFactory.CreateLogger<TelemetryService>());
-
-```
-
-<h3>Create Instance (With Dependency Injection)</h3>
+<h3>Create instance with dependency injection</h3>
 
 <h4>Add appsettings.json File With Contents</h4>
 
