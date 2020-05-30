@@ -12,9 +12,9 @@
       A Telemetry service
 
       Features
-
-      * Captures Telemetry (SQL, Middleware, DurableRest)
-      * Query Telemetry
+      * Captures Telemetry (SQL, Middleware, DurableRest, API, Email, Queue)
+      * Flush Method OR Application Lifetime (ApplicationStopping - To clear all existing logs
+      * Sends Telemetry to SQL Tables every 30 seconds in bulk inserts.
     </Description>
   </PropertyGroup>
 
