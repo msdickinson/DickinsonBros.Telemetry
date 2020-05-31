@@ -58,6 +58,8 @@ Features
   Insert SQL Telemetry (50 Times)
   Flush Telemetry
 
+![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/Telemetry.PNG)
+
 Example Runner Included in folder "DickinsonBros.Encryption.Telemetry"
 
 <h2>Setup</h2>
@@ -151,4 +153,3 @@ https://github.com/msdickinson/DickinsonBros.Telemetry/tree/master/DickinsonBros
 
 ![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/SQLDatabaseExample.PNG)
 
-    
