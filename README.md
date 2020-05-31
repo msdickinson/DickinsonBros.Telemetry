@@ -66,6 +66,12 @@ Example Runner Included in folder "DickinsonBros.Encryption.Telemetry"
 
     https://www.nuget.org/packages/DickinsonBros.Telemetry
     https://www.nuget.org/packages/DickinsonBros.Telemetry.Abstractions
+    
+    https://www.nuget.org/packages/DickinsonBros.Logger
+    https://www.nuget.org/packages/DickinsonBros.Logger.Abstractions
+    
+    https://www.nuget.org/packages/DickinsonBros.Redactor
+    https://www.nuget.org/packages/DickinsonBros.Redactor.Abstractions
 
 <h3>Create instance with dependency injection</h3>
 
@@ -123,3 +129,12 @@ using (var provider = services.BuildServiceProvider())
   var telemetryService = provider.GetRequiredService<ITelemetryService>();
 }
 ```
+
+<h3>Setup Database</h3
+    
+In DickinsonBros.Telemetry.Database Proj you can publish directly to a database or have it generate an sql script to setup all of the tables used for TelemetryService. ConnectionString in TelemetryServiceOptions json above should point to where your database is located.
+
+https://github.com/msdickinson/DickinsonBros.Telemetry/tree/master/DickinsonBros.Telemetry.Database
+
+
+    
