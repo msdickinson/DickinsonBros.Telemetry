@@ -130,11 +130,25 @@ using (var provider = services.BuildServiceProvider())
 }
 ```
 
-<h3>Setup Database</h3
-    
-In DickinsonBros.Telemetry.Database Proj you can publish directly to a database or have it generate an sql script to setup all of the tables used for TelemetryService. ConnectionString in TelemetryServiceOptions json above should point to where your database is located.
+<h3>Setup Database</h3>
+
+<h4>SQL Database Project</h4>
+
+In DickinsonBros.Telemetry.Database you can publish the tables required or generate a script.
+
+* Open Sln in base of repo with visaul studio 
+* Right Click DickinsonBros.Telemetry.Database In Visaul studio and click Publish
+* Select Taget database Conneciton
+* Click Generate Script or Publish (If you click generate script you will need to run it in your database)
+
+Note: The ConnectionString in TelemetryServiceOptions json above should point to where your database is located.
 
 https://github.com/msdickinson/DickinsonBros.Telemetry/tree/master/DickinsonBros.Telemetry.Database
 
+![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/SQLDatabaseProject.PNG)
+
+<h4>SQL Database after script runs</h4>
+
+![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/SQLDatabaseExample.PNG)
 
     
