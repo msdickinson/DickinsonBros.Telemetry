@@ -51,12 +51,13 @@ Features
 
   await telemetryService.Flush().ConfigureAwait(false);
 ```
-  Insert API Telemetry (50 Times)
-  Insert DurableRest Telemetry (50 Times)
-  Insert Email Telemetry (50 Times)
-  Insert Queue Telemetry (50 Times)
-  Insert SQL Telemetry (50 Times)
-  Flush Telemetry
+
+    Insert API Telemetry (50 Times)
+    Insert DurableRest Telemetry (50 Times)
+    Insert Email Telemetry (50 Times)
+    Insert Queue Telemetry (50 Times)
+    Insert SQL Telemetry (50 Times)
+    Flush Telemetry
 
 ![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/Telemetry.PNG)
 
