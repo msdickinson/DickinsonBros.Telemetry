@@ -90,6 +90,10 @@ Note: Runner Shows this with added steps to enypct Connection String
 
 ```c#
 
+//ApplicationLifetime
+using var applicationLifetime = new ApplicationLifetime();
+
+//ServiceCollection
 var serviceCollection = new ServiceCollection();
 
 //Configure Options
@@ -99,14 +103,23 @@ var builder = new ConfigurationBuilder()
 
 var configuration = builder.Build();
 serviceCollection.AddOptions();
-services.Configure<CertificateEncryptionServiceOptions<RunnerCertificateEncryptionServiceOptions>>(_configuration.GetSection(nameof(RunnerCertificateEncryptionServiceOptions)));
 
-//Add Service
-services.AddCertificateEncryptionService<RunnerCertificateEncryptionServiceOptions>();
+services.AddSingleton<IApplicationLifetime>(applicationLifetime);
+
+//Add Logging Service
+services.AddLoggingService();
+
+//Add Redactor
+services.AddRedactorService();
+services.Configure<RedactorServiceOptions>(_configuration.GetSection(nameof(RedactorServiceOptions)));
+
+//Add Telemetry
+services.AddTelemetryService();
+services.Configure<TelemetryServiceOptions>(_configuration.GetSection(nameof(TelemetryServiceOptions)));
 
 //Build Service Provider 
 using (var provider = services.BuildServiceProvider())
 {
-  var certificateEncryptionService = provider.GetRequiredService<ICertificateEncryptionService<RunnerCertificateEncryptionServiceOptions>>();
+  var telemetryService = provider.GetRequiredService<ITelemetryService>();
 }
 ```
