@@ -146,8 +146,6 @@ In DickinsonBros.Telemetry.Database you can publish the tables required or gener
 
 Note: The ConnectionString in TelemetryServiceOptions json above should point to where your database is located.
 
-https://github.com/msdickinson/DickinsonBros.Telemetry/tree/master/DickinsonBros.Telemetry.Database
-
 ![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/SQLDatabaseProject.PNG)
 
 <h4>SQL Database after script runs</h4>
