@@ -39,7 +39,6 @@ namespace DickinsonBros.Telemetry
             _options = options.Value;
             _logger = logger;
             _telemetryDBService = telemetryDBService;
-
             _internalTokenSource = new CancellationTokenSource();
              var _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(applicationLifetime.ApplicationStopped, _internalTokenSource.Token);
             _uploaderTask = Uploader(_cancellationTokenSource.Token);

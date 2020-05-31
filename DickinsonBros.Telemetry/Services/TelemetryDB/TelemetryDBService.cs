@@ -13,7 +13,7 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
     public class TelemetryDBService : ITelemetryDBService
     {
         internal readonly string _connectionString;
-        internal readonly ITelemetrySQLService _sqlService;
+        internal readonly ITelemetrySQLService _telemetrySQLService;
 
         internal const string API_TELEMTRY_TABLE_NAME = "APITelemetry";
         internal const string SQL_TELEMTRY_TABLE_NAME = "SQLTelemetry";
@@ -31,11 +31,11 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
         public TelemetryDBService
         (
             IOptions<TelemetryServiceOptions> telemetryServiceOptions,
-            ITelemetrySQLService sqlService
+            ITelemetrySQLService telemetrySQLService
         )
         {
             _connectionString = telemetryServiceOptions.Value.ConnectionString;
-            _sqlService = sqlService;
+            _telemetrySQLService = telemetrySQLService;
             _dataTableAPITelemetry          = GenerateDataTableAPITelemtry();
             _dataTableSQLTelemetry          = GenerateDataTableSQLTelemtry();
             _dataTableDurableRestTelemetry  = GenerateDataTableDurableRestTelemtry();
@@ -158,7 +158,7 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
                 )
             );
 
-            await _sqlService
+            await _telemetrySQLService
                   .BulkCopyAsync<APITelemetry>
                   (
                       _connectionString,
@@ -186,7 +186,7 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
                 )
             );
 
-            await _sqlService
+            await _telemetrySQLService
                   .BulkCopyAsync<APITelemetry>
                   (
                       _connectionString,
@@ -217,7 +217,7 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
                 )
             );
 
-            await _sqlService
+            await _telemetrySQLService
                   .BulkCopyAsync<APITelemetry>
                   (
                       _connectionString,
@@ -246,7 +246,7 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
                 )
             );
 
-            await _sqlService
+            await _telemetrySQLService
                   .BulkCopyAsync<APITelemetry>
                   (
                       _connectionString,
@@ -273,7 +273,7 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
                 )
             );
 
-            await _sqlService
+            await _telemetrySQLService
                   .BulkCopyAsync<APITelemetry>
                   (
                       _connectionString,
