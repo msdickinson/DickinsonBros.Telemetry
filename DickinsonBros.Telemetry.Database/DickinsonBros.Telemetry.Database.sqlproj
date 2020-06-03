@@ -65,10 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Scehmas\Telemetry.sql" />
-    <Build Include="Tables\APITelemetry.sql" />
-    <Build Include="Tables\DurableRestTelemetry.sql" />
-    <Build Include="Tables\EmailTelemetry.sql" />
-    <Build Include="Tables\SQLTelemetry.sql" />
-    <Build Include="Tables\QueueTelemetry.sql" />
+    <Build Include="Tables\Data.sql" />
+    <Build Include="Tables\TelemetryType.sql" />
+    <Build Include="Tables\TelemetryState.sql" />
+    <Build Include="StoredProcedures\TelemetryStateUpsert.sql" />
+    <Build Include="StoredProcedures\TelemetryTypeUpsert.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="SeedData\SeedData.sql" />
   </ItemGroup>
 </Project>

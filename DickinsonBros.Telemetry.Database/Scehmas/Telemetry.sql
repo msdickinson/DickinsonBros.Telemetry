@@ -1,1 +1,1 @@
-﻿CREATE SCHEMA [TestRunner]
+﻿CREATE SCHEMA [Telemetry]

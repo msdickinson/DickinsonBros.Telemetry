@@ -22,11 +22,7 @@ namespace DickinsonBros.Telemetry
         internal bool _flush;
         internal TimeSpan _bcpInterval = TimeSpan.FromSeconds(30);
         internal CancellationTokenSource _internalTokenSource = new CancellationTokenSource();
-        internal readonly ConcurrentQueue<SQLTelemetry> _queueSQLTelemetry = new ConcurrentQueue<SQLTelemetry>();
-        internal readonly ConcurrentQueue<APITelemetry> _queueAPITelemetry = new ConcurrentQueue<APITelemetry>();
-        internal readonly ConcurrentQueue<DurableRestTelemetry> _queueDurableRestTelemetry = new ConcurrentQueue<DurableRestTelemetry>();
-        internal readonly ConcurrentQueue<QueueTelemetry> _queueQueueTelemetry = new ConcurrentQueue<QueueTelemetry>();
-        internal readonly ConcurrentQueue<EmailTelemetry> _queueEmailTelemetry = new ConcurrentQueue<EmailTelemetry>();
+        internal readonly ConcurrentQueue<TelemetryData> _queueTelemetry = new ConcurrentQueue<TelemetryData>();
 
         public TelemetryService
         (
@@ -39,51 +35,31 @@ namespace DickinsonBros.Telemetry
             _options = options.Value;
             _logger = logger;
             _telemetryDBService = telemetryDBService;
-
             _internalTokenSource = new CancellationTokenSource();
              var _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(applicationLifetime.ApplicationStopped, _internalTokenSource.Token);
             _uploaderTask = Uploader(_cancellationTokenSource.Token);
             _flush = false;
             _uploaderTask.ConfigureAwait(false);
         }
-        public void InsertEmail(EmailTelemetry emailTelemetry)
+        public void Insert(TelemetryData telemetryData)
         {
-            if (_options.RecordEmail && emailTelemetry != null)
+            if (telemetryData == null)
             {
-                _queueEmailTelemetry.Enqueue(emailTelemetry);
+                throw new NullReferenceException();
             }
-        }
 
-        public void InsertSQL(SQLTelemetry sqlTelemetry)
-        {
-            if (_options.RecordSQL && sqlTelemetry != null)
+            if (string.IsNullOrWhiteSpace(telemetryData.Name))
             {
-                _queueSQLTelemetry.Enqueue(sqlTelemetry);
+                throw new ArgumentException("Value Is Expected to have at least one char", nameof(telemetryData.Name));
             }
-        }
 
-        public void InsertAPI(APITelemetry apiTelemetry)
-        {
-            if (_options.RecordAPI && apiTelemetry != null)
+            if (telemetryData.DateTime == DateTime.MinValue)
             {
-                _queueAPITelemetry.Enqueue(apiTelemetry);
+                throw new ArgumentException("Date Expected to be set", nameof(telemetryData.DateTime));
             }
-        }
 
-        public void InsertDurableRest(DurableRestTelemetry durableRestTelemetry)
-        {
-            if (_options.RecordDurableRest && durableRestTelemetry != null)
-            {
-                _queueDurableRestTelemetry.Enqueue(durableRestTelemetry);
-            }
-        }
-
-        public void InsertQueue(QueueTelemetry queueTelemetry)
-        {
-            if (_options.RecordQueue && queueTelemetry != null)
-            {
-                _queueQueueTelemetry.Enqueue(queueTelemetry);
-            }
+            telemetryData.Name = telemetryData.Name.Substring(0, Math.Min(telemetryData.Name.Length, 255));
+            _queueTelemetry.Enqueue(telemetryData);
         }
 
         internal async Task Uploader(CancellationToken token)
@@ -104,50 +80,13 @@ namespace DickinsonBros.Telemetry
 
         internal async Task Upload()
         {
-            //API
-            var apiTelemetryItems = new List<APITelemetry>();
-            while (_queueAPITelemetry.TryDequeue(out APITelemetry apiTelemetry))
+            var telemetryItems = new List<TelemetryData>();
+            while (_queueTelemetry.TryDequeue(out TelemetryData telemetryData))
             {
-                apiTelemetryItems.Add(apiTelemetry);
+                telemetryItems.Add(telemetryData);
             }
 
-            //Queue
-            var queueTelemetryItems = new List<QueueTelemetry>();
-            while (_queueQueueTelemetry.TryDequeue(out QueueTelemetry queueTelemetry))
-            {
-                queueTelemetryItems.Add(queueTelemetry);
-            }
-
-            //DurableRest
-            var durableRestTelemetryItems = new List<DurableRestTelemetry>();
-            while (_queueDurableRestTelemetry.TryDequeue(out DurableRestTelemetry durableRestTelemetry))
-            {
-                durableRestTelemetryItems.Add(durableRestTelemetry);
-            }
-
-            //SQL
-            var sqlTelemetryItems = new List<SQLTelemetry>();
-            while (_queueSQLTelemetry.TryDequeue(out SQLTelemetry sqlTelemetry))
-            {
-                sqlTelemetryItems.Add(sqlTelemetry);
-            }
-
-            //Email
-            var emailTelemetryItems = new List<EmailTelemetry>();
-            while (_queueEmailTelemetry.TryDequeue(out EmailTelemetry emailTelemetry))
-            {
-                emailTelemetryItems.Add(emailTelemetry);
-            }
-
-            //Bulk Insert
-            await Task.WhenAll
-            (
-                _telemetryDBService.BulkInsertAPITelemetryAsync(apiTelemetryItems),
-                _telemetryDBService.BulkInsertQueueTelemetryAsync(queueTelemetryItems),
-                _telemetryDBService.BulkInsertDurableRestTelemetryAsync(durableRestTelemetryItems),
-                _telemetryDBService.BulkInsertSQLTelemetryAsync(sqlTelemetryItems),
-                _telemetryDBService.BulkInsertEmailTelemetryAsync(emailTelemetryItems)
-            ).ConfigureAwait(false);
+            await _telemetryDBService.BulkInsertTelemetryAsync(telemetryItems).ConfigureAwait(false);
         }
 
         public async Task Flush()
