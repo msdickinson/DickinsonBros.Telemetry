@@ -41,35 +41,10 @@ namespace DickinsonBros.Telemetry.Runner
                     Console.WriteLine("Insert API Telemetry (50 Times)");
                     for (int i = 0; i < 50; i++)
                     {
-                        telemetryService.InsertAPI(GenerateAPITelemetry());
-                    }
-
-                    Console.WriteLine("Insert DurableRest Telemetry (50 Times)");
-                    for (int i = 0; i < 50; i++)
-                    {
-                        telemetryService.InsertDurableRest(GenerateDurableRestTelemetry());
-                    }
-
-                    Console.WriteLine("Insert Email Telemetry (50 Times)");
-                    for (int i = 0; i < 50; i++)
-                    {
-                        telemetryService.InsertEmail(GenerateEmailTelemetry());
-                    }
-
-                    Console.WriteLine("Insert Queue Telemetry (50 Times)");
-                    for (int i = 0; i < 50; i++)
-                    {
-                        telemetryService.InsertQueue(GenerateQueueTelemetry());
-                    }
-
-                    Console.WriteLine("Insert SQL Telemetry (50 Times)");
-                    for (int i = 0; i < 50; i++)
-                    {
-                        telemetryService.InsertSQL(GenerateSQLTelemetry());
+                        telemetryService.Insert(GenerateTelemetry());
                     }
 
                     Console.WriteLine("Flush Telemetry");
-
 
                     await telemetryService.Flush().ConfigureAwait(false);
                 }
@@ -87,100 +62,15 @@ namespace DickinsonBros.Telemetry.Runner
             }
         }
 
-        private SQLTelemetry GenerateSQLTelemetry()
+        private TelemetryData GenerateTelemetry()
         {
-            return new SQLTelemetry
+            return new TelemetryData
             {
-                CorrelationId = Guid.NewGuid().ToString(),
-                Database = "DickinsonBros",
-                RequestRedacted =
-@"{
-    ""username"":""NewUser"",   
-    ""passwordhash"":""***Redacted***"",
-    ""salt"":""***Redacted***"",
-    ""email"":""marktest@gmail.com"",
-    ""emailPreference"": 1,
-    ""emailPreferenceToken"":""***Redacted***"",
-    ""activateEmailToken"":""***Redacted***"",
-}",
-
+                Name = new Random().Next(0, 5).ToString(),
                 ElapsedMilliseconds = new Random().Next(0, 1000),
-                Query = "[Account].[Insert]",
-
-                IsSuccessful = true,
-                Source = "Runner.Queue"
-            };
-        }
-
-        private QueueTelemetry GenerateQueueTelemetry()
-        {
-            return new QueueTelemetry
-            {
-                CorrelationId = Guid.NewGuid().ToString(),
-                ElapsedMilliseconds = new Random().Next(0, 1000),
-                Name = "AccountPostSetup",
-                QueueId = 1,
-                State = QueueState.Ready,
-                IsSuccessful = true,
-                Source = "Runner.Queue"
-            };
-        }
-
-        private EmailTelemetry GenerateEmailTelemetry()
-        {
-            return new EmailTelemetry
-            {
-                CorrelationId = Guid.NewGuid().ToString(),
-                ElapsedMilliseconds = new Random().Next(0, 1000),
-                IsSuccessful = true,
-                Source = "Runner.Email",
-                Subject = "Roller Coaster Maker - Activate Your Email",
-                To = "marktest@gmail.com",
-            };
-        }
-
-        private DurableRestTelemetry GenerateDurableRestTelemetry()
-        {
-            return new DurableRestTelemetry
-            {
-                Attempt = 1,
-                BaseUrl = "https://www.RollerCoasterMaker.com/AccountAPI/",
-                CorrelationId = "",
-                ElapsedMilliseconds = new Random().Next(0, 1000),
-                Name = "Create Account",
-                RequestRedacted =
- @"{
-    ""Username"":""NewUser"",   
-    ""Password"":""***Redacted***""  
-}",
-                Resource = "CreateAccount",
-                ResponseRedacted =
- @"{
-    ""Token"":""***Redacted***""  
-}",
-                StatusCode = 201,
-                Source = "Runner.Proxy"
-            };
-        }
-
-        private APITelemetry GenerateAPITelemetry()
-        {
-            return new APITelemetry
-            {
-                CorrelationId = Guid.NewGuid().ToString(),
-                ElapsedMilliseconds = new Random().Next(0, 1000),
-                Source = "Account API",
-                RequestRedacted =
- @"{
-    ""Username"":""NewUser"",   
-    ""Password"":""***Redacted***""  
-}",
-                ResponseRedacted =
- @"{
-    ""Token"":""***Redacted***""  
-}",
-                StatusCode = 201,
-                Url = "https://www.RollerCoasterMaker.com/AccountAPI/CreateAccount"
+                TelemetryState = (TelemetryState)Enum.ToObject(typeof(TelemetryState), new Random().Next(0, 2)),
+                TelemetryType = (TelemetryType)Enum.ToObject(typeof(TelemetryType), new Random().Next(0, 3)),
+                DateTime = DateTime.UtcNow
             };
         }
 

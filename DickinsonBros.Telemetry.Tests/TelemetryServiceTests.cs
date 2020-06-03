@@ -20,27 +20,52 @@ namespace DickinsonBros.Telemetry.Tests
     [TestClass]
     public class TelemetryServiceTests : BaseTest
     {
+
         [TestMethod]
-        public void InsertEmail_RecordEmailIsFalse_DoNotEnqueueEmailTelemetry()
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Insert_InputTelemetryIsNull_ThrowsNullException()
         {
             RunDependencyInjectedTest
             (
                 (serviceProvider) =>
                 {
                     //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordEmail = false;
-
-                    var emailTelemetryPassedIn = new EmailTelemetry();
+                    var telemetryDataPassedIn = (TelemetryData)null;
 
                     var uut = serviceProvider.GetRequiredService<ITelemetryService>();
                     var uutConcrete = (TelemetryService)uut;
 
                     //Act
-                    uutConcrete.InsertEmail(emailTelemetryPassedIn);
+                    uutConcrete.Insert(telemetryDataPassedIn);
+                  
+                    //Assert
+                    
+                },
+                serviceCollection => ConfigureServices(serviceCollection)
+            );
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Insert_InputNameIsEmpty_ThrowsNullException()
+        {
+            RunDependencyInjectedTest
+            (
+                (serviceProvider) =>
+                {
+                    //Setup
+                    var telemetryDataPassedIn = new TelemetryData
+                    {
+                        Name = ""
+                    };
+
+                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
+                    var uutConcrete = (TelemetryService)uut;
+
+                    //Act
+                    uutConcrete.Insert(telemetryDataPassedIn);
 
                     //Assert
-                    Assert.AreEqual(0, uutConcrete._queueEmailTelemetry.Count);
 
                 },
                 serviceCollection => ConfigureServices(serviceCollection)
@@ -48,34 +73,35 @@ namespace DickinsonBros.Telemetry.Tests
         }
 
         [TestMethod]
-        public void InsertEmail_InputEmailTelemetryIsNull_DoNotEnqueueEmailTelemetry()
+        [ExpectedException(typeof(ArgumentException), "")]
+        public void Insert_InputDateTimeIsDefault_ThrowsNullException()
         {
             RunDependencyInjectedTest
             (
                 (serviceProvider) =>
                 {
                     //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordEmail = true;
-
-                    var emailTelemetryPassedIn = (EmailTelemetry)null;
+                    var telemetryDataPassedIn = new TelemetryData
+                    {
+                        Name = "abc"
+                    };
 
                     var uut = serviceProvider.GetRequiredService<ITelemetryService>();
                     var uutConcrete = (TelemetryService)uut;
 
                     //Act
-                    uutConcrete.InsertEmail(emailTelemetryPassedIn);
+                    uutConcrete.Insert(telemetryDataPassedIn);
 
                     //Assert
-                    Assert.AreEqual(0, uutConcrete._queueEmailTelemetry.Count);
 
                 },
                 serviceCollection => ConfigureServices(serviceCollection)
             );
         }
 
+
         [TestMethod]
-        public void InsertEmail_EmailTelemetryHasAValueAndRecordEmailIsTrue_EnqueueEmailTelemetry()
+        public void Insert_VaildInput_EnqueueEmailTelemetry()
         {
             RunDependencyInjectedTest
             (
@@ -83,348 +109,23 @@ namespace DickinsonBros.Telemetry.Tests
                 {
                     //Setup
                     var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordEmail = true;
 
-                    var emailTelemetryExpected = new EmailTelemetry();
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertEmail(emailTelemetryExpected);
-
-                    //Assert
-                    uutConcrete._queueEmailTelemetry.TryPeek(out EmailTelemetry emailTelemetryObserved);
-                    Assert.AreEqual(1, uutConcrete._queueEmailTelemetry.Count);
-                    Assert.AreEqual(emailTelemetryExpected, emailTelemetryObserved);
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertSQL_RecordSQLIsFalse_DoNotEnqueueSQLTelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordSQL = false;
-
-                    var sqlTelemetryPassedIn = new SQLTelemetry();
+                    var telemetryDataExpected = new TelemetryData
+                    {
+                        Name = "name",
+                        DateTime = new DateTime(2020, 6, 3)
+                    };
 
                     var uut = serviceProvider.GetRequiredService<ITelemetryService>();
                     var uutConcrete = (TelemetryService)uut;
 
                     //Act
-                    uutConcrete.InsertSQL(sqlTelemetryPassedIn);
+                    uutConcrete.Insert(telemetryDataExpected);
 
                     //Assert
-                    Assert.AreEqual(0, uutConcrete._queueSQLTelemetry.Count);
-
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertSQL_InputSQLTelemetryIsNull_DoNotEnqueueSQLTelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordSQL = true;
-
-                    var sqlTelemetryPassedIn = (SQLTelemetry)null;
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertSQL(sqlTelemetryPassedIn);
-
-                    //Assert
-                    Assert.AreEqual(0, uutConcrete._queueSQLTelemetry.Count);
-
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertSQL_SQLTelemetryHasAValueAndRecordSQLIsTrue_EnqueueSQLTelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordSQL = true;
-
-                    var sqlTelemetryExpected = new SQLTelemetry();
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertSQL(sqlTelemetryExpected);
-
-                    //Assert
-                    uutConcrete._queueSQLTelemetry.TryPeek(out SQLTelemetry sqlTelemetryObserved);
-                    Assert.AreEqual(1, uutConcrete._queueSQLTelemetry.Count);
-                    Assert.AreEqual(sqlTelemetryExpected, sqlTelemetryObserved);
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertAPI_RecordAPIIsFalse_DoNotEnqueueAPITelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordAPI = false;
-
-                    var apiTelemetryPassedIn = new APITelemetry();
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertAPI(apiTelemetryPassedIn);
-
-                    //Assert
-                    Assert.AreEqual(0, uutConcrete._queueAPITelemetry.Count);
-
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertAPI_InputAPITelemetryIsNull_DoNotEnqueueAPITelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordAPI = true;
-
-                    var apiTelemetryPassedIn = (APITelemetry)null;
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertAPI(apiTelemetryPassedIn);
-
-                    //Assert
-                    Assert.AreEqual(0, uutConcrete._queueAPITelemetry.Count);
-
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertAPI_APITelemetryHasAValueAndRecordAPIIsTrue_EnqueueAPITelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordAPI = true;
-
-                    var apiTelemetryExpected = new APITelemetry();
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertAPI(apiTelemetryExpected);
-
-                    //Assert
-                    uutConcrete._queueAPITelemetry.TryPeek(out APITelemetry apiTelemetryObserved);
-                    Assert.AreEqual(1, uutConcrete._queueAPITelemetry.Count);
-                    Assert.AreEqual(apiTelemetryExpected, apiTelemetryObserved);
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertDurableRest_RecordDurableRestIsFalse_DoNotEnqueueDurableRestTelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordDurableRest = false;
-
-                    var durableRestTelemetryPassedIn = new DurableRestTelemetry();
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertDurableRest(durableRestTelemetryPassedIn);
-
-                    //Assert
-                    Assert.AreEqual(0, uutConcrete._queueDurableRestTelemetry.Count);
-
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertDurableRest_InputDurableRestTelemetryIsNull_DoNotEnqueueDurableRestTelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordDurableRest = true;
-
-                    var durableRestTelemetryPassedIn = (DurableRestTelemetry)null;
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertDurableRest(durableRestTelemetryPassedIn);
-
-                    //Assert
-                    Assert.AreEqual(0, uutConcrete._queueDurableRestTelemetry.Count);
-
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertDurableRest_DurableRestTelemetryHasAValueAndRecordDurableRestIsTrue_EnqueueDurableRestTelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordDurableRest = true;
-
-                    var durableRestTelemetryExpected = new DurableRestTelemetry();
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertDurableRest(durableRestTelemetryExpected);
-
-                    //Assert
-                    uutConcrete._queueDurableRestTelemetry.TryPeek(out DurableRestTelemetry durableRestTelemetryObserved);
-                    Assert.AreEqual(1, uutConcrete._queueDurableRestTelemetry.Count);
-                    Assert.AreEqual(durableRestTelemetryExpected, durableRestTelemetryObserved);
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertQueue_RecordQueueIsFalse_DoNotEnqueueQueueTelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordQueue = false;
-
-                    var queueTelemetryPassedIn = new QueueTelemetry();
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertQueue(queueTelemetryPassedIn);
-
-                    //Assert
-                    Assert.AreEqual(0, uutConcrete._queueQueueTelemetry.Count);
-
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertQueue_InputQueueTelemetryIsNull_DoNotEnqueueQueueTelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordQueue = true;
-
-                    var queueTelemetryPassedIn = (QueueTelemetry)null;
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertQueue(queueTelemetryPassedIn);
-
-                    //Assert
-                    Assert.AreEqual(0, uutConcrete._queueQueueTelemetry.Count);
-
-                },
-                serviceCollection => ConfigureServices(serviceCollection)
-            );
-        }
-
-        [TestMethod]
-        public void InsertQueue_QueueTelemetryHasAValueAndRecordQueueIsTrue_EnqueueQueueTelemetry()
-        {
-            RunDependencyInjectedTest
-            (
-                (serviceProvider) =>
-                {
-                    //Setup
-                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
-                    options.Value.RecordQueue = true;
-
-                    var queueTelemetryExpected = new QueueTelemetry();
-
-                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
-                    var uutConcrete = (TelemetryService)uut;
-
-                    //Act
-                    uutConcrete.InsertQueue(queueTelemetryExpected);
-
-                    //Assert
-                    uutConcrete._queueQueueTelemetry.TryPeek(out QueueTelemetry queueTelemetryObserved);
-                    Assert.AreEqual(1, uutConcrete._queueQueueTelemetry.Count);
-                    Assert.AreEqual(queueTelemetryExpected, queueTelemetryObserved);
+                    uutConcrete._queueTelemetry.TryPeek(out TelemetryData etelemetryObserved);
+                    Assert.AreEqual(1, uutConcrete._queueTelemetry.Count);
+                    Assert.AreEqual(telemetryDataExpected, etelemetryObserved);
                 },
                 serviceCollection => ConfigureServices(serviceCollection)
             );
@@ -440,114 +141,39 @@ namespace DickinsonBros.Telemetry.Tests
                     //Setup
                     var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
 
-                    var apiTelemetryExpected            = new APITelemetry();
-                    var durableRestTelemetryExpected    = new DurableRestTelemetry();
-                    var emailTelemetryExpected          = new EmailTelemetry();
-                    var queueTelemetryExpected          = new QueueTelemetry();
-                    var sqlTelemetryExpected            = new SQLTelemetry();
 
-                    var apiTelemetryObserved = (List<APITelemetry>)null;
-                    var durableRestTelemetryObserved = (List<DurableRestTelemetry>)null;
-                    var emailTelemetryObserved = (List<EmailTelemetry>)null;
-                    var queueTelemetryObserved = (List<QueueTelemetry>)null;
-                    var sqlTelemetryObserved = (List<SQLTelemetry>)null;
-
+                    var telemetryExpected = new TelemetryData();
+                    var telemetryObserved = (List<TelemetryData>)null;
                     var telemetryDBServiceMock = serviceProvider.GetMock<ITelemetryDBService>();
 
                     //API Call Back
                     telemetryDBServiceMock
                     .Setup
                     (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertAPITelemetryAsync
+                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertTelemetryAsync
                         (
-                            It.IsAny<List<APITelemetry>>()
+                            It.IsAny<List<TelemetryData>>()
                          )
                     )
-                    .Callback<List<APITelemetry>>((apiTelemetry) =>
+                    .Callback<List<TelemetryData>>((apiTelemetry) =>
                     {
-                        apiTelemetryObserved = apiTelemetry;
-                    });
-
-                    //DurableRest Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertDurableRestTelemetryAsync
-                        (
-                            It.IsAny<List<DurableRestTelemetry>>()
-                         )
-                    )
-                    .Callback<List<DurableRestTelemetry>>((durableRestTelemetry) =>
-                    {
-                        durableRestTelemetryObserved = durableRestTelemetry;
-                    });
-
-                    //Email Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertEmailTelemetryAsync
-                        (
-                            It.IsAny<List<EmailTelemetry>>()
-                         )
-                    )
-                    .Callback<List<EmailTelemetry>>((emailTelemetry) =>
-                    {
-                        emailTelemetryObserved = emailTelemetry;
-                    });
-
-                    //Queue Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertQueueTelemetryAsync
-                        (
-                            It.IsAny<List<QueueTelemetry>>()
-                         )
-                    )
-                    .Callback<List<QueueTelemetry>>((queueTelemetry) =>
-                    {
-                        queueTelemetryObserved = queueTelemetry;
-                    });
-
-                    //SQL Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertSQLTelemetryAsync
-                        (
-                            It.IsAny<List<SQLTelemetry>>()
-                         )
-                    )
-                    .Callback<List<SQLTelemetry>>((sqlTelemetry) =>
-                    {
-                        sqlTelemetryObserved = sqlTelemetry;
+                        telemetryObserved = apiTelemetry;
                     });
 
                     var uut = serviceProvider.GetRequiredService<ITelemetryService>();
                     var uutConcrete = (TelemetryService)uut;
 
-                    uutConcrete._queueAPITelemetry.Enqueue(apiTelemetryExpected);
-                    uutConcrete._queueDurableRestTelemetry.Enqueue(durableRestTelemetryExpected);
-                    uutConcrete._queueEmailTelemetry.Enqueue(emailTelemetryExpected);
-                    uutConcrete._queueQueueTelemetry.Enqueue(queueTelemetryExpected);
-                    uutConcrete._queueSQLTelemetry.Enqueue(sqlTelemetryExpected);
+                    uutConcrete._queueTelemetry.Enqueue(telemetryExpected);
 
                     //Act
                     await uutConcrete.Upload();
 
                     //Assert
-                    Assert.AreEqual(0, uutConcrete._queueQueueTelemetry.Count);
-                    Assert.AreEqual(0, uutConcrete._queueDurableRestTelemetry.Count);
-                    Assert.AreEqual(0, uutConcrete._queueEmailTelemetry.Count);
-                    Assert.AreEqual(0, uutConcrete._queueQueueTelemetry.Count);
-                    Assert.AreEqual(0, uutConcrete._queueSQLTelemetry.Count);
+                    Assert.AreEqual(0, uutConcrete._queueTelemetry.Count);
 
-                    Assert.AreEqual(apiTelemetryExpected, apiTelemetryObserved.First());
-                    Assert.AreEqual(durableRestTelemetryExpected, durableRestTelemetryObserved.First());
-                    Assert.AreEqual(emailTelemetryExpected, emailTelemetryObserved.First());
-                    Assert.AreEqual(queueTelemetryExpected, queueTelemetryObserved.First());
-                    Assert.AreEqual(sqlTelemetryExpected, sqlTelemetryObserved.First());
+
+                    Assert.AreEqual(telemetryExpected, telemetryObserved.First());
+   
 
                 },
                 serviceCollection => ConfigureServices(serviceCollection)
@@ -565,16 +191,11 @@ namespace DickinsonBros.Telemetry.Tests
                     //Setup
                     var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
 
-
                     var cancellationTokenSource  = new CancellationTokenSource();
                     var token = cancellationTokenSource.Token;
                     cancellationTokenSource.Cancel();
 
-                    var apiTelemetry = new APITelemetry();
-                    var durableRestTelemetry = new DurableRestTelemetry();
-                    var emailTelemetry = new EmailTelemetry();
-                    var queueTelemetry = new QueueTelemetry();
-                    var sqlTelemetry = new SQLTelemetry();
+                    var telemetryData = new TelemetryData();
 
                     var telemetryDBServiceMock = serviceProvider.GetMock<ITelemetryDBService>();
 
@@ -582,120 +203,33 @@ namespace DickinsonBros.Telemetry.Tests
                     telemetryDBServiceMock
                     .Setup
                     (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertAPITelemetryAsync
+                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertTelemetryAsync
                         (
-                            It.IsAny<List<APITelemetry>>()
-                         )
-                    );
-
-                    //DurableRest Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertDurableRestTelemetryAsync
-                        (
-                            It.IsAny<List<DurableRestTelemetry>>()
-                         )
-                    );
-
-                    //Email Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertEmailTelemetryAsync
-                        (
-                            It.IsAny<List<EmailTelemetry>>()
-                         )
-                    );
-
-                    //Queue Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertQueueTelemetryAsync
-                        (
-                            It.IsAny<List<QueueTelemetry>>()
-                         )
-                    );
-
-                    //SQL Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertSQLTelemetryAsync
-                        (
-                            It.IsAny<List<SQLTelemetry>>()
-                         )
+                            It.IsAny<List<TelemetryData>>()
+                        )
                     );
 
                     var uut = serviceProvider.GetRequiredService<ITelemetryService>();
                     var uutConcrete = (TelemetryService)uut;
 
-                    uutConcrete._queueAPITelemetry.Enqueue(apiTelemetry);
-                    uutConcrete._queueDurableRestTelemetry.Enqueue(durableRestTelemetry);
-                    uutConcrete._queueEmailTelemetry.Enqueue(emailTelemetry);
-                    uutConcrete._queueQueueTelemetry.Enqueue(queueTelemetry);
-                    uutConcrete._queueSQLTelemetry.Enqueue(sqlTelemetry);
+                    uutConcrete._queueTelemetry.Enqueue(telemetryData);
 
                     //Act
                     await uutConcrete.Uploader(token);
 
                     //Assert
-                    Assert.AreEqual(1, uutConcrete._queueQueueTelemetry.Count);
-                    Assert.AreEqual(1, uutConcrete._queueDurableRestTelemetry.Count);
-                    Assert.AreEqual(1, uutConcrete._queueEmailTelemetry.Count);
-                    Assert.AreEqual(1, uutConcrete._queueQueueTelemetry.Count);
-                    Assert.AreEqual(1, uutConcrete._queueSQLTelemetry.Count);
+                    Assert.AreEqual(1, uutConcrete._queueTelemetry.Count);
 
                     telemetryDBServiceMock
                     .Verify
                     (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertAPITelemetryAsync
+                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertTelemetryAsync
                         (
-                            It.IsAny<List<APITelemetry>>()
+                            It.IsAny<List<TelemetryData>>()
                         ),
                         Times.Never
                     );
 
-                    telemetryDBServiceMock
-                    .Verify
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertDurableRestTelemetryAsync
-                        (
-                            It.IsAny<List<DurableRestTelemetry>>()
-                        ),
-                        Times.Never
-                    );
-
-                    telemetryDBServiceMock
-                    .Verify
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertEmailTelemetryAsync
-                        (
-                            It.IsAny<List<EmailTelemetry>>()
-                        ),
-                        Times.Never
-                    );
-
-                    telemetryDBServiceMock
-                    .Verify
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertQueueTelemetryAsync
-                        (
-                            It.IsAny<List<QueueTelemetry>>()
-                        ),
-                        Times.Never
-                    );
-
-                    telemetryDBServiceMock
-                    .Verify
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertSQLTelemetryAsync
-                        (
-                            It.IsAny<List<SQLTelemetry>>()
-                        ),
-                        Times.Never
-                    );
 
                 },
                 serviceCollection => ConfigureServices(serviceCollection)
@@ -715,72 +249,23 @@ namespace DickinsonBros.Telemetry.Tests
                     var cancellationTokenSource = new CancellationTokenSource();
                     var token = cancellationTokenSource.Token;
 
-                    var apiTelemetry = new APITelemetry();
-                    var durableRestTelemetry = new DurableRestTelemetry();
-                    var emailTelemetry = new EmailTelemetry();
-                    var queueTelemetry = new QueueTelemetry();
-                    var sqlTelemetry = new SQLTelemetry();
-
+                    var telemetryData = new TelemetryData();
                     var telemetryDBServiceMock = serviceProvider.GetMock<ITelemetryDBService>();
 
                     //API Call Back
                     telemetryDBServiceMock
                     .Setup
                     (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertAPITelemetryAsync
+                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertTelemetryAsync
                         (
-                            It.IsAny<List<APITelemetry>>()
-                         )
-                    );
-
-                    //DurableRest Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertDurableRestTelemetryAsync
-                        (
-                            It.IsAny<List<DurableRestTelemetry>>()
-                         )
-                    );
-
-                    //Email Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertEmailTelemetryAsync
-                        (
-                            It.IsAny<List<EmailTelemetry>>()
-                         )
-                    );
-
-                    //Queue Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertQueueTelemetryAsync
-                        (
-                            It.IsAny<List<QueueTelemetry>>()
-                         )
-                    );
-
-                    //SQL Call Back
-                    telemetryDBServiceMock
-                    .Setup
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertSQLTelemetryAsync
-                        (
-                            It.IsAny<List<SQLTelemetry>>()
+                            It.IsAny<List<TelemetryData>>()
                          )
                     );
 
                     var uut = serviceProvider.GetRequiredService<ITelemetryService>();
                     var uutConcrete = (TelemetryService)uut;
 
-                    uutConcrete._queueAPITelemetry.Enqueue(apiTelemetry);
-                    uutConcrete._queueDurableRestTelemetry.Enqueue(durableRestTelemetry);
-                    uutConcrete._queueEmailTelemetry.Enqueue(emailTelemetry);
-                    uutConcrete._queueQueueTelemetry.Enqueue(queueTelemetry);
-                    uutConcrete._queueSQLTelemetry.Enqueue(sqlTelemetry);
+                    uutConcrete._queueTelemetry.Enqueue(telemetryData);
 
                     //Act
                     var task = uutConcrete.Uploader(token);
@@ -790,58 +275,14 @@ namespace DickinsonBros.Telemetry.Tests
                     await task.ConfigureAwait(false);
 
                     //Assert
-                    Assert.AreEqual(0, uutConcrete._queueQueueTelemetry.Count);
-                    Assert.AreEqual(0, uutConcrete._queueDurableRestTelemetry.Count);
-                    Assert.AreEqual(0, uutConcrete._queueEmailTelemetry.Count);
-                    Assert.AreEqual(0, uutConcrete._queueQueueTelemetry.Count);
-                    Assert.AreEqual(0, uutConcrete._queueSQLTelemetry.Count);
+                    Assert.AreEqual(0, uutConcrete._queueTelemetry.Count);
 
                     telemetryDBServiceMock
                     .Verify
                     (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertAPITelemetryAsync
+                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertTelemetryAsync
                         (
-                            It.IsAny<List<APITelemetry>>()
-                        ),
-                        Times.AtLeastOnce
-                    );
-
-                    telemetryDBServiceMock
-                    .Verify
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertDurableRestTelemetryAsync
-                        (
-                            It.IsAny<List<DurableRestTelemetry>>()
-                        ),
-                        Times.AtLeastOnce
-                    );
-
-                    telemetryDBServiceMock
-                    .Verify
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertEmailTelemetryAsync
-                        (
-                            It.IsAny<List<EmailTelemetry>>()
-                        ),
-                        Times.AtLeastOnce
-                    );
-
-                    telemetryDBServiceMock
-                    .Verify
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertQueueTelemetryAsync
-                        (
-                            It.IsAny<List<QueueTelemetry>>()
-                        ),
-                        Times.AtLeastOnce
-                    );
-
-                    telemetryDBServiceMock
-                    .Verify
-                    (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertSQLTelemetryAsync
-                        (
-                            It.IsAny<List<SQLTelemetry>>()
+                            It.IsAny<List<TelemetryData>>()
                         ),
                         Times.AtLeastOnce
                     );
@@ -865,11 +306,7 @@ namespace DickinsonBros.Telemetry.Tests
                     var cancellationTokenSource = new CancellationTokenSource();
                     var token = cancellationTokenSource.Token;
 
-                    var apiTelemetry = new APITelemetry();
-                    var durableRestTelemetry = new DurableRestTelemetry();
-                    var emailTelemetry = new EmailTelemetry();
-                    var queueTelemetry = new QueueTelemetry();
-                    var sqlTelemetry = new SQLTelemetry();
+                    var telemetryData = new TelemetryData();
 
                     var telemetryDBServiceMock = serviceProvider.GetMock<ITelemetryDBService>();
 
@@ -877,10 +314,10 @@ namespace DickinsonBros.Telemetry.Tests
                     telemetryDBServiceMock
                     .Setup
                     (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertAPITelemetryAsync
+                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertTelemetryAsync
                         (
-                            It.IsAny<List<APITelemetry>>()
-                         )
+                            It.IsAny<List<TelemetryData>>()
+                        )
                     ).ThrowsAsync(new System.Exception());
 
                     //  Logging
@@ -909,7 +346,7 @@ namespace DickinsonBros.Telemetry.Tests
                     var uut = serviceProvider.GetRequiredService<ITelemetryService>();
                     var uutConcrete = (TelemetryService)uut;
 
-                    uutConcrete._queueAPITelemetry.Enqueue(apiTelemetry);
+                    uutConcrete._queueTelemetry.Enqueue(telemetryData);
 
                     //Act
                     var task = uutConcrete.Uploader(token);
@@ -922,9 +359,9 @@ namespace DickinsonBros.Telemetry.Tests
                     telemetryDBServiceMock
                     .Verify
                     (
-                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertAPITelemetryAsync
+                        telemetryDBServiceMock => telemetryDBServiceMock.BulkInsertTelemetryAsync
                         (
-                            It.IsAny<List<APITelemetry>>()
+                            It.IsAny<List<TelemetryData>>()
                         ),
                         Times.AtLeastOnce()
                     );
@@ -1018,12 +455,7 @@ namespace DickinsonBros.Telemetry.Tests
 
             var telemetryDBOptions = new TelemetryServiceOptions
             {
-                RecordAPI = true,
-                RecordDurableRest = true,
-                RecordEmail = true,
-                RecordQueue = true,
-                RecordSQL = true,
-                Source = "Telemetry Unit Tests"
+                ConnectionString = "ConnectionString"
             };
 
             var options = Options.Create(telemetryDBOptions);
