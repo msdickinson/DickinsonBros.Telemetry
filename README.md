@@ -59,7 +59,7 @@ Features
     Insert SQL Telemetry (50 Times)
     Flush Telemetry
 
-![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/Telemetry.PNG)
+![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/TelemetrySQL.PNG)
 
 Example Runner Included in folder "DickinsonBros.Encryption.Telemetry"
 
@@ -85,12 +85,6 @@ Note: Runner Shows this with added steps to enypct Connection String
  ```json  
 {
   "TelemetryServiceOptions": {
-    "Source": "DickinsonBros.Telemtry.Runner",
-    "RecordDurableRest": true,
-    "RecordSQL": true,
-    "RecordQueue": true,
-    "RecordAPI": true,
-    "RecordEmail": true,
     "ConnectionString": "..."
   }
 }
@@ -145,10 +139,4 @@ In DickinsonBros.Telemetry.Database you can publish the tables required or gener
 * Click Generate Script or Publish (If you click generate script you will need to run it in your database)
 
 Note: The ConnectionString in TelemetryServiceOptions json above should point to where your database is located.
-
-![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/SQLDatabaseProject.PNG)
-
-<h4>SQL Database after script runs</h4>
-
-![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/SQLDatabaseExample.PNG)
 
