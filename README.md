@@ -61,7 +61,7 @@ Features
 
 ![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/TelemetrySQL.PNG)
 
-Example Runner Included in folder "DickinsonBros.Encryption.Telemetry"
+Example Runner Included in folder "DickinsonBros.Telemetry.Runner"
 
 <h2>Setup</h2>
 
