@@ -16,47 +16,17 @@ Features
 <h2>Example Usage</h2>
 
 ```C#
-  Console.WriteLine("Insert API Telemetry (50 Times)");
-  for (int i = 0; i < 50; i++)
-  {
-      telemetryService.InsertAPI(GenerateAPITelemetry());
-  }
+    Console.WriteLine("Insert API Telemetry (50 Times)");
+    for (int i = 0; i < 50; i++)
+    {
+        telemetryService.Insert(GenerateTelemetry());
+    }
 
-  Console.WriteLine("Insert DurableRest Telemetry (50 Times)");
-  for (int i = 0; i < 50; i++)
-  {
-      telemetryService.InsertDurableRest(GenerateDurableRestTelemetry());
-  }
-
-  Console.WriteLine("Insert Email Telemetry (50 Times)");
-  for (int i = 0; i < 50; i++)
-  {
-      telemetryService.InsertEmail(GenerateEmailTelemetry());
-  }
-
-  Console.WriteLine("Insert Queue Telemetry (50 Times)");
-  for (int i = 0; i < 50; i++)
-  {
-      telemetryService.InsertQueue(GenerateQueueTelemetry());
-  }
-
-  Console.WriteLine("Insert SQL Telemetry (50 Times)");
-  for (int i = 0; i < 50; i++)
-  {
-      telemetryService.InsertSQL(GenerateSQLTelemetry());
-  }
-
-  Console.WriteLine("Flush Telemetry");
-
-
-  await telemetryService.Flush().ConfigureAwait(false);
+    Console.WriteLine("Flush Telemetry");
+    await telemetryService.Flush().ConfigureAwait(false);
 ```
 
     Insert API Telemetry (50 Times)
-    Insert DurableRest Telemetry (50 Times)
-    Insert Email Telemetry (50 Times)
-    Insert Queue Telemetry (50 Times)
-    Insert SQL Telemetry (50 Times)
     Flush Telemetry
 
 ![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/TelemetrySQL.PNG)
