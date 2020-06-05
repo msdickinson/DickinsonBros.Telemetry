@@ -7,9 +7,9 @@
 A Telemetry service
 
 Features
-* Captures Telemetry (SQL, Middleware, DurableRest, API, Email, Queue)
+* Captures Telemetry (Name, ElapsedMilliseconds, TelemetryType, TelemetryState, DateTime)
 * Sends Telemetry to SQL Tables every 30 seconds in bulk inserts.
-* Flush Method OR Application Lifetime (ApplicationStopping - To clear all existing logs
+* Flush Method OR Application Lifetime (ApplicationStopping) - To clear all existing logs
 
 <a href="https://dev.azure.com/marksamdickinson/DickinsonBros/_build?definitionScope=%5CDickinsonBros.Telemetry">Builds</a>
 
