@@ -7,61 +7,31 @@
 A Telemetry service
 
 Features
-* Captures Telemetry (SQL, Middleware, DurableRest, API, Email, Queue)
+* Captures Telemetry (Name, ElapsedMilliseconds, TelemetryType, TelemetryState, DateTime)
 * Sends Telemetry to SQL Tables every 30 seconds in bulk inserts.
-* Flush Method OR Application Lifetime (ApplicationStopping - To clear all existing logs
+* Flush Method OR Application Lifetime (ApplicationStopping) - To clear all existing logs
 
 <a href="https://dev.azure.com/marksamdickinson/DickinsonBros/_build?definitionScope=%5CDickinsonBros.Telemetry">Builds</a>
 
 <h2>Example Usage</h2>
 
 ```C#
-  Console.WriteLine("Insert API Telemetry (50 Times)");
-  for (int i = 0; i < 50; i++)
-  {
-      telemetryService.InsertAPI(GenerateAPITelemetry());
-  }
+    Console.WriteLine("Insert API Telemetry (50 Times)");
+    for (int i = 0; i < 50; i++)
+    {
+        telemetryService.Insert(GenerateTelemetry());
+    }
 
-  Console.WriteLine("Insert DurableRest Telemetry (50 Times)");
-  for (int i = 0; i < 50; i++)
-  {
-      telemetryService.InsertDurableRest(GenerateDurableRestTelemetry());
-  }
-
-  Console.WriteLine("Insert Email Telemetry (50 Times)");
-  for (int i = 0; i < 50; i++)
-  {
-      telemetryService.InsertEmail(GenerateEmailTelemetry());
-  }
-
-  Console.WriteLine("Insert Queue Telemetry (50 Times)");
-  for (int i = 0; i < 50; i++)
-  {
-      telemetryService.InsertQueue(GenerateQueueTelemetry());
-  }
-
-  Console.WriteLine("Insert SQL Telemetry (50 Times)");
-  for (int i = 0; i < 50; i++)
-  {
-      telemetryService.InsertSQL(GenerateSQLTelemetry());
-  }
-
-  Console.WriteLine("Flush Telemetry");
-
-
-  await telemetryService.Flush().ConfigureAwait(false);
+    Console.WriteLine("Flush Telemetry");
+    await telemetryService.Flush().ConfigureAwait(false);
 ```
 
     Insert API Telemetry (50 Times)
-    Insert DurableRest Telemetry (50 Times)
-    Insert Email Telemetry (50 Times)
-    Insert Queue Telemetry (50 Times)
-    Insert SQL Telemetry (50 Times)
     Flush Telemetry
 
 ![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/TelemetrySQL.PNG)
 
-Example Runner Included in folder "DickinsonBros.Encryption.Telemetry"
+Example Runner Included in folder "DickinsonBros.Telemetry.Runner"
 
 <h2>Setup</h2>
 
