@@ -89,7 +89,7 @@ namespace DickinsonBros.Telemetry
             await _telemetryDBService.BulkInsertTelemetryAsync(telemetryItems).ConfigureAwait(false);
         }
 
-        public async Task Flush()
+        public async Task FlushAsync()
         {
             //Cancel Token
             _internalTokenSource.Cancel();

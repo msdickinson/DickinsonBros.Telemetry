@@ -407,7 +407,7 @@ namespace DickinsonBros.Telemetry.Tests
 
                     //Act
                     cancellationTokenSource.Cancel();
-                    await uutConcrete.Flush().ConfigureAwait(false);
+                    await uutConcrete.FlushAsync().ConfigureAwait(false);
 
                     //Assert
 
@@ -440,7 +440,7 @@ namespace DickinsonBros.Telemetry.Tests
                     var uutConcrete = (TelemetryService)uut;
 
                     //Act
-                    await uutConcrete.Flush().ConfigureAwait(false);
+                    await uutConcrete.FlushAsync().ConfigureAwait(false);
 
                     //Assert
 
