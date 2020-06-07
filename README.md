@@ -23,7 +23,7 @@ Features
     }
 
     Console.WriteLine("Flush Telemetry");
-    await telemetryService.Flush().ConfigureAwait(false);
+    await telemetryService.FlushAsync().ConfigureAwait(false);
 ```
 
     Insert API Telemetry (50 Times)
