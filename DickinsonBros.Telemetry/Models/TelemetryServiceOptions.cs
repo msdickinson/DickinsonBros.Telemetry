@@ -6,5 +6,6 @@ namespace DickinsonBros.Telemetry.Models
     public class TelemetryServiceOptions
     {
         public string ConnectionString { get; set; }
+        public string Source { get; set; }
     }
 }

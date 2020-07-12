@@ -25,6 +25,7 @@ namespace DickinsonBros.Telemetry.Runner.Services
                 telemetryServiceOptions.ConnectionString = certificateEncryptionService.Decrypt(telemetryServiceOptions.ConnectionString);
                 configuration.Bind($"{nameof(TelemetryServiceOptions)}", options);
 
+                options.Source = telemetryServiceOptions.Source;
                 options.ConnectionString = telemetryServiceOptions.ConnectionString;
             }
         }

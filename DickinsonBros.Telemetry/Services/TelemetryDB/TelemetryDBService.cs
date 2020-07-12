@@ -12,6 +12,8 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
     public class TelemetryDBService : ITelemetryDBService
     {
         internal readonly string _connectionString;
+        internal readonly string _source;
+        
         internal readonly ITelemetrySQLService _telemetrySQLService;
 
         internal const string TELEMTRY_TABLE_NAME = "Telemetry.Data";
@@ -26,6 +28,7 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
         )
         {
             _connectionString = telemetryServiceOptions.Value.ConnectionString;
+            _source = telemetryServiceOptions.Value.Source;
             _telemetrySQLService = telemetrySQLService;
             _dataTableTelemetry = GenerateDataTableTelemtry();
         }
@@ -41,7 +44,8 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
                     new DataColumn("ElapsedMilliseconds", typeof(int)),
                     new DataColumn("TelemetryType", typeof(int)),
                     new DataColumn("TelemetryState", typeof(int)),
-                    new DataColumn("DateTime", typeof(DateTime))
+                    new DataColumn("DateTime", typeof(DateTime)),
+                    new DataColumn("Source", typeof(string))
                 }
             );
             return dataTable;
@@ -58,7 +62,8 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
                     e.ElapsedMilliseconds,
                     e.TelemetryType,
                     e.TelemetryState,
-                    e.DateTime
+                    e.DateTime,
+                    _source
                 )
             );
 
