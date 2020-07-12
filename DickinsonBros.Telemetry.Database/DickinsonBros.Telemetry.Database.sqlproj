@@ -70,6 +70,9 @@
     <Build Include="Tables\TelemetryState.sql" />
     <Build Include="StoredProcedures\TelemetryStateUpsert.sql" />
     <Build Include="StoredProcedures\TelemetryTypeUpsert.sql" />
+    <Build Include="StoredProcedures\QueryTelemetry.sql" />
+    <Build Include="Types\TelemetryStateType.sql" />
+    <Build Include="Types\TelemetryTypeType.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="SeedData\SeedData.sql" />

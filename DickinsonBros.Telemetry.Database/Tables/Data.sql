@@ -5,5 +5,6 @@
     [ElapsedMilliseconds] int NOT NULL,
     [TelemetryType] int NOT NULL CONSTRAINT FK_Queue_TelemetryType REFERENCES [Telemetry].[TelemetryType]([TelemetryTypeId]),
     [TelemetryState] int NOT NULL CONSTRAINT FK_Queue_TelemetryStatee REFERENCES [Telemetry].[TelemetryState]([TelemetryStateId]), 
-    [DateTime] DATETIME2 NOT NULL
+    [DateTime] DATETIME2 NOT NULL, 
+    [Source] NVARCHAR(255) NOT NULL
 )

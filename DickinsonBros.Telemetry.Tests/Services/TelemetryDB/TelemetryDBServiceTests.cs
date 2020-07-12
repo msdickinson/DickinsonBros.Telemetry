@@ -36,12 +36,13 @@ namespace DickinsonBros.Telemetry.Tests.Services.TelemetryDB
                     //Assert
                     Assert.IsNotNull(observed);
                     Assert.IsTrue(observed.Rows.Count == 0);
-                    Assert.IsTrue(observed.Columns.Count == 5);
+                    Assert.IsTrue(observed.Columns.Count == 6);
                     Assert.IsTrue(observed.Columns.Contains("Name"));
                     Assert.IsTrue(observed.Columns.Contains("ElapsedMilliseconds"));
                     Assert.IsTrue(observed.Columns.Contains("TelemetryType"));
                     Assert.IsTrue(observed.Columns.Contains("TelemetryState"));
                     Assert.IsTrue(observed.Columns.Contains("DateTime"));
+                    Assert.IsTrue(observed.Columns.Contains("Source"));
                 },
                 serviceCollection => ConfigureServices(serviceCollection)
             );
@@ -64,12 +65,14 @@ namespace DickinsonBros.Telemetry.Tests.Services.TelemetryDB
                     //Assert
                     Assert.IsNotNull(observed);
                     Assert.IsTrue(observed.Rows.Count == 0);
-                    Assert.IsTrue(observed.Columns.Count == 5);
+                    Assert.IsTrue(observed.Columns.Count == 6);
                     Assert.IsTrue(observed.Columns.Contains("Name"));
                     Assert.IsTrue(observed.Columns.Contains("ElapsedMilliseconds"));
                     Assert.IsTrue(observed.Columns.Contains("TelemetryType"));
                     Assert.IsTrue(observed.Columns.Contains("TelemetryState"));
                     Assert.IsTrue(observed.Columns.Contains("DateTime"));
+                    Assert.IsTrue(observed.Columns.Contains("Source"));
+                   
                 },
                 serviceCollection => ConfigureServices(serviceCollection)
             );
@@ -138,19 +141,20 @@ namespace DickinsonBros.Telemetry.Tests.Services.TelemetryDB
                     Assert.AreEqual(TelemetryDBService.TELEMTRY_TABLE_NAME, tableNameObserved);
                     Assert.IsNull(batchSizeObserved);
                     Assert.AreEqual(uutConcrete._timeout, timeoutObserved);
-                    Assert.IsTrue(tableObserved.Columns.Count == 5);
+                    Assert.IsTrue(tableObserved.Columns.Count == 6);
                     Assert.IsTrue(tableObserved.Columns.Contains("Name"));
                     Assert.IsTrue(tableObserved.Columns.Contains("ElapsedMilliseconds"));
                     Assert.IsTrue(tableObserved.Columns.Contains("TelemetryType"));
                     Assert.IsTrue(tableObserved.Columns.Contains("TelemetryState"));
                     Assert.IsTrue(tableObserved.Columns.Contains("DateTime"));
+                    Assert.IsTrue(tableObserved.Columns.Contains("Source"));
                     Assert.IsTrue(tableObserved.Rows.Count == 1);
                     Assert.AreEqual(telemetry.First().Name, tableObserved.Rows[0].Field<string>("Name"));
                     Assert.AreEqual(telemetry.First().ElapsedMilliseconds, tableObserved.Rows[0].Field<int>("ElapsedMilliseconds"));
                     Assert.AreEqual(telemetry.First().TelemetryState, tableObserved.Rows[0].Field<TelemetryState>("TelemetryState"));
                     Assert.AreEqual(telemetry.First().TelemetryType, tableObserved.Rows[0].Field<TelemetryType>("TelemetryType"));
                     Assert.AreEqual(telemetry.First().DateTime, tableObserved.Rows[0].Field<DateTime>("DateTime"));
-
+                    Assert.AreEqual("SampleSource", tableObserved.Rows[0].Field<string>("Source"));
                 },
                 serviceCollection => ConfigureServices(serviceCollection)
             );
@@ -161,7 +165,8 @@ namespace DickinsonBros.Telemetry.Tests.Services.TelemetryDB
         {
             var telemetryServiceOptions = new TelemetryServiceOptions
             {
-                ConnectionString = "ConnectionString"
+                ConnectionString = "ConnectionString",
+                Source = "SampleSource"
             };
 
             var options = Options.Create(telemetryServiceOptions);
