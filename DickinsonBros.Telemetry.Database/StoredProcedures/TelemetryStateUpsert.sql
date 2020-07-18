@@ -5,6 +5,8 @@
     @dateChanged datetime2(7)
 )
 AS 
+	SET NOCOUNT ON;
+
   SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
   BEGIN TRAN
  
