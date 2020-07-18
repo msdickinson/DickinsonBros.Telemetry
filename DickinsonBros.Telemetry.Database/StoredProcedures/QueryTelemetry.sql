@@ -9,6 +9,8 @@
 )
 AS 
 
+	SET NOCOUNT ON;
+
 select * 
 from Telemetry.[Data]
 where 

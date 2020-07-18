@@ -58,7 +58,10 @@ namespace DickinsonBros.Telemetry
                 throw new ArgumentException("Date Expected to be set", nameof(telemetryData.DateTime));
             }
 
+            //Remove Any Prams If Name is a URI
+            telemetryData.Name = telemetryData.Name.Split("?")[0];
             telemetryData.Name = telemetryData.Name.Substring(0, Math.Min(telemetryData.Name.Length, 255));
+
             _queueTelemetry.Enqueue(telemetryData);
         }
 

@@ -160,7 +160,6 @@ namespace DickinsonBros.Telemetry.Tests.Services.TelemetryDB
             );
         }
 
-
         private IServiceCollection ConfigureServices(IServiceCollection serviceCollection)
         {
             var telemetryServiceOptions = new TelemetryServiceOptions

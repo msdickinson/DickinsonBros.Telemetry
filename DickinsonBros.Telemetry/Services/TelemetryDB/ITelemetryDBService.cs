@@ -7,6 +7,5 @@ namespace DickinsonBros.Telemetry.Services.TelemetryDB
     public interface ITelemetryDBService
     {
         Task BulkInsertTelemetryAsync(List<TelemetryData> telemetry);
-
     }
 }

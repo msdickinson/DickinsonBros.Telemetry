@@ -99,6 +99,39 @@ namespace DickinsonBros.Telemetry.Tests
             );
         }
 
+        [TestMethod]
+        public void Insert_URIWithParameters_EnqueueEmailTelemetry()
+        {
+            RunDependencyInjectedTest
+            (
+                (serviceProvider) =>
+                {
+                    //Setup
+                    var options = serviceProvider.GetRequiredService<IOptions<TelemetryServiceOptions>>();
+
+                    var uriNameWithPrams = "https://www.samplerequset.com/api/getUser?id=5";
+                    var uriNameWithOutPrams = "https://www.samplerequset.com/api/getUser";
+                    var telemetryDataExpected = new TelemetryData
+                    {
+                        Name = uriNameWithPrams,
+                        DateTime = new DateTime(2020, 6, 3)
+                    };
+
+                    var uut = serviceProvider.GetRequiredService<ITelemetryService>();
+                    var uutConcrete = (TelemetryService)uut;
+
+                    //Act
+                    uutConcrete.Insert(telemetryDataExpected);
+
+                    //Assert
+                    uutConcrete._queueTelemetry.TryPeek(out TelemetryData etelemetryObserved);
+                    Assert.AreEqual(1, uutConcrete._queueTelemetry.Count);
+                    Assert.AreEqual(telemetryDataExpected, etelemetryObserved);
+                    Assert.AreEqual(uriNameWithOutPrams, telemetryDataExpected.Name);
+                },
+                serviceCollection => ConfigureServices(serviceCollection)
+            );
+        }
 
         [TestMethod]
         public void Insert_VaildInput_EnqueueEmailTelemetry()
@@ -179,7 +212,6 @@ namespace DickinsonBros.Telemetry.Tests
                 serviceCollection => ConfigureServices(serviceCollection)
             );
         }
-
 
         [TestMethod]
         public async Task Uploader_CancellationIsRequestedBeforeCall_BulkInsertsNotCalled()
