@@ -8,6 +8,7 @@
    @sourceContains varchar(200) --SourceContains
 )
 AS 
+
 	SET NOCOUNT ON;
 
 select * 
