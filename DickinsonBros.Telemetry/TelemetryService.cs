@@ -4,6 +4,7 @@ using DickinsonBros.Telemetry.Abstractions.Models;
 using DickinsonBros.Telemetry.Models;
 using DickinsonBros.Telemetry.Services.TelemetryDB;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Concurrent;
@@ -27,7 +28,7 @@ namespace DickinsonBros.Telemetry
         public TelemetryService
         (
             IOptions<TelemetryServiceOptions> options,
-            IApplicationLifetime applicationLifetime,
+            IHostApplicationLifetime hostApplicationLifetime,
             ITelemetryDBService telemetryDBService,
             ILoggingService<TelemetryService> logger
         )
@@ -36,7 +37,7 @@ namespace DickinsonBros.Telemetry
             _logger = logger;
             _telemetryDBService = telemetryDBService;
             _internalTokenSource = new CancellationTokenSource();
-             var _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(applicationLifetime.ApplicationStopped, _internalTokenSource.Token);
+             var _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(hostApplicationLifetime.ApplicationStopped, _internalTokenSource.Token);
             _uploaderTask = Uploader(_cancellationTokenSource.Token);
             _flush = false;
             _uploaderTask.ConfigureAwait(false);
