@@ -1,19 +1,14 @@
 ﻿using DickinsonBros.Encryption.Certificate.Extensions;
-using DickinsonBros.Encryption.Certificate.Models;
 using DickinsonBros.Logger.Extensions;
 using DickinsonBros.Redactor.Extensions;
-using DickinsonBros.Redactor.Models;
 using DickinsonBros.Telemetry.Abstractions;
 using DickinsonBros.Telemetry.Abstractions.Models;
 using DickinsonBros.Telemetry.Extensions;
-using DickinsonBros.Telemetry.Models;
-using DickinsonBros.Telemetry.Runner.Models;
 using DickinsonBros.Telemetry.Runner.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -93,15 +88,12 @@ namespace DickinsonBros.Telemetry.Runner
 
             //Add Redactor
             services.AddRedactorService();
-            services.Configure<RedactorServiceOptions>(_configuration.GetSection(nameof(RedactorServiceOptions)));
 
             //Add Certificate Encryption
-            services.AddCertificateEncryptionService<CertificateEncryptionServiceOptions>();
-            services.Configure<CertificateEncryptionServiceOptions<RunnerCertificateEncryptionServiceOptions>>(_configuration.GetSection(nameof(RunnerCertificateEncryptionServiceOptions)));
+            services.AddConfigurationEncryptionService();
 
             //Add Telemetry
             services.AddTelemetryService();
-            services.AddSingleton<IConfigureOptions<TelemetryServiceOptions>, TelemetryServiceOptionsOptionsConfigurator>();
         }
 
         IServiceCollection InitializeDependencyInjection()
