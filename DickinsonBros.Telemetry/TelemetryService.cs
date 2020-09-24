@@ -3,7 +3,6 @@ using DickinsonBros.Telemetry.Abstractions;
 using DickinsonBros.Telemetry.Abstractions.Models;
 using DickinsonBros.Telemetry.Models;
 using DickinsonBros.Telemetry.Services.TelemetryDB;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
