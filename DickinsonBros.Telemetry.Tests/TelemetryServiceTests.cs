@@ -6,6 +6,7 @@ using DickinsonBros.Telemetry.Services.TelemetryDB;
 using DickinsonBros.Test;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -428,9 +429,9 @@ namespace DickinsonBros.Telemetry.Tests
                     var token = cancellationTokenSource.Token;
 
                     var telemetryDBServiceMock = serviceProvider.GetMock<ITelemetryDBService>();
-                    var applicationLifetimeMock = serviceProvider.GetMock<IApplicationLifetime>();
+                    var hostApplicationLifetime = serviceProvider.GetMock<IHostApplicationLifetime>();
 
-                    applicationLifetimeMock
+                    hostApplicationLifetime
                         .SetupGet(applicationLifetime => applicationLifetime.ApplicationStopping)
                         .Returns(token);
 
@@ -462,9 +463,9 @@ namespace DickinsonBros.Telemetry.Tests
                     var token = cancellationTokenSource.Token;
 
                     var telemetryDBServiceMock = serviceProvider.GetMock<ITelemetryDBService>();
-                    var applicationLifetimeMock = serviceProvider.GetMock<IApplicationLifetime>();
+                    var hostApplicationLifetime = serviceProvider.GetMock<IHostApplicationLifetime>();
 
-                    applicationLifetimeMock
+                    hostApplicationLifetime
                         .SetupGet(applicationLifetime => applicationLifetime.ApplicationStopping)
                         .Returns(token);
 
@@ -492,7 +493,7 @@ namespace DickinsonBros.Telemetry.Tests
 
             var options = Options.Create(telemetryDBOptions);
             serviceCollection.AddSingleton<IOptions<TelemetryServiceOptions>>(options);
-            serviceCollection.AddSingleton(Mock.Of<IApplicationLifetime>());
+            serviceCollection.AddSingleton(Mock.Of<IHostApplicationLifetime>());
             serviceCollection.AddSingleton(Mock.Of<ITelemetryDBService>());
             serviceCollection.AddSingleton(Mock.Of<ILoggingService<TelemetryService>>());
 

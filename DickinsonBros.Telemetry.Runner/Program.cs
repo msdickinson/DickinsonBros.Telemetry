@@ -5,9 +5,9 @@ using DickinsonBros.Telemetry.Abstractions;
 using DickinsonBros.Telemetry.Abstractions.Models;
 using DickinsonBros.Telemetry.Extensions;
 using DickinsonBros.Telemetry.Runner.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
@@ -26,13 +26,13 @@ namespace DickinsonBros.Telemetry.Runner
         {
             try
             {
-                using var applicationLifetime = new ApplicationLifetime();
                 var services = InitializeDependencyInjection();
-                ConfigureServices(services, applicationLifetime);
+                ConfigureServices(services);
 
                 using (var provider = services.BuildServiceProvider())
                 {
                     var telemetryService = provider.GetRequiredService<ITelemetryService>();
+                    var hostApplicationLifetime = provider.GetService<IHostApplicationLifetime>();
                     Console.WriteLine("Insert API Telemetry (50 Times)");
                     for (int i = 0; i < 50; i++)
                     {
@@ -42,9 +42,10 @@ namespace DickinsonBros.Telemetry.Runner
                     Console.WriteLine("Flush Telemetry");
 
                     await telemetryService.FlushAsync().ConfigureAwait(false);
+
+                    hostApplicationLifetime.StopApplication();
                 }
 
-                applicationLifetime.StopApplication();
                 await Task.CompletedTask.ConfigureAwait(false);
             }
             catch (Exception e)
@@ -69,7 +70,7 @@ namespace DickinsonBros.Telemetry.Runner
             };
         }
 
-        private void ConfigureServices(IServiceCollection services, ApplicationLifetime applicationLifetime)
+        private void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
             services.AddLogging(config =>
@@ -81,7 +82,8 @@ namespace DickinsonBros.Telemetry.Runner
                     config.AddConsole();
                 }
             });
-            services.AddSingleton<IApplicationLifetime>(applicationLifetime);
+
+            services.AddSingleton<IHostApplicationLifetime, HostApplicationLifetime>();
 
             //Add Logging Service
             services.AddLoggingService();

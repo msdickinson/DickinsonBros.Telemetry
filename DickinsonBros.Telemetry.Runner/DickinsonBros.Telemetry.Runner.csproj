@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
     <PackageReference Include="DickinsonBros.Encryption.Certificate" Version="6.1.0" />
     <PackageReference Include="DickinsonBros.Encryption.Certificate.Abstractions" Version="4.1.0" />
     <PackageReference Include="DickinsonBros.Logger" Version="3.0.0" />
