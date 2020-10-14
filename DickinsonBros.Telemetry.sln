@@ -16,7 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9 Misc", "9 Misc", "{B4E53A51-EA5D-44AA-ADA9-27F97C440650}"
 	ProjectSection(SolutionItems) = preProject
 		Scripts\CreateNugetPackageCI.ps1 = Scripts\CreateNugetPackageCI.ps1
-		DickinsonBrosTelemetry.runsettings = DickinsonBrosTelemetry.runsettings
+		DickinsonBros.Telemetry.runsettings = DickinsonBros.Telemetry.runsettings
 		Scripts\Publish.yml = Scripts\Publish.yml
 		Scripts\Test.yml = Scripts\Test.yml
 	EndProjectSection
