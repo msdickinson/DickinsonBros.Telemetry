@@ -1,5 +1,4 @@
-﻿using DickinsonBros.Encryption.Certificate.Abstractions;
-using DickinsonBros.Telemetry.Models;
+﻿using DickinsonBros.Telemetry.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -20,12 +19,8 @@ namespace DickinsonBros.Telemetry.Configurators
             {
                 var provider = scope.ServiceProvider;
                 var configuration = provider.GetRequiredService<IConfiguration>();
-                var configurationEncryptionService = provider.GetRequiredService<IConfigurationEncryptionService>();
                 var telemetryServiceOptions = configuration.GetSection(nameof(TelemetryServiceOptions)).Get<TelemetryServiceOptions>();
-
                 configuration.Bind($"{nameof(TelemetryServiceOptions)}", options);
-
-                options.ConnectionString = configurationEncryptionService.Decrypt(telemetryServiceOptions.ConnectionString);
             }
         }
     }

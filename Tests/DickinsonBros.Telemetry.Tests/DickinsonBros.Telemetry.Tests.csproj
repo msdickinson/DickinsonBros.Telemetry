@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DickinsonBros.Telemetry\DickinsonBros.Telemetry.csproj" />
+    <ProjectReference Include="..\..\Source\DickinsonBros.Telemetry\DickinsonBros.Telemetry.csproj" />
   </ItemGroup>
   
 </Project>

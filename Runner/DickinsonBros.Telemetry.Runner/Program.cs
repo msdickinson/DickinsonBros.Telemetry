@@ -41,7 +41,7 @@ namespace DickinsonBros.Telemetry.Runner
 
                     Console.WriteLine("Flush Telemetry");
 
-                    await telemetryService.FlushAsync().ConfigureAwait(false);
+                    //await telemetryService.FlushAsync().ConfigureAwait(false);
 
                     hostApplicationLifetime.StopApplication();
                 }

@@ -3,27 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DickinsonBros.Telemetry", "DickinsonBros.Telemetry\DickinsonBros.Telemetry.csproj", "{6A4775D1-2744-4DD3-8457-CA77E35C7C09}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 Source", "1 Source", "{1955151E-9B12-4C2D-A56C-49B0DEB588DF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 Library", "1 Library", "{A1345DEB-396C-4CA1-91CE-FC26C27AF34F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 Runner", "3 Runner", "{514B48C0-23A5-456F-9074-8DB3AF3E3C9A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 Database", "2 Database", "{54D8D43D-2E94-40EB-8E54-786A24ABCC7D}"
-EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DickinsonBros.Telemetry.Database", "DickinsonBros.Telemetry.Database\DickinsonBros.Telemetry.Database.sqlproj", "{5DBA42AB-5FEE-4AC0-9EF4-F9AC92396A65}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "9 Misc", "9 Misc", "{B4E53A51-EA5D-44AA-ADA9-27F97C440650}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 Tests", "2 Tests", "{C5AB1092-C81A-4BCE-B19A-88CDC2C2694A}"
 	ProjectSection(SolutionItems) = preProject
-		Scripts\CreateNugetPackageCI.ps1 = Scripts\CreateNugetPackageCI.ps1
-		DickinsonBros.Telemetry.runsettings = DickinsonBros.Telemetry.runsettings
+		Tests\DickinsonBros.Telemetry.runsettings = Tests\DickinsonBros.Telemetry.runsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 Runner", "3 Runner", "{3A79C627-CEF4-4B50-902E-91501E562EFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 Scripts", "4 Scripts", "{0076EC0F-FEED-443F-A931-039C3370F985}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\Prerelease.DickinsonBros.Telemetry.ps1 = Scripts\Prerelease.DickinsonBros.Telemetry.ps1
 		Scripts\Publish.yml = Scripts\Publish.yml
 		Scripts\Test.yml = Scripts\Test.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DickinsonBros.Telemetry.Runner", "DickinsonBros.Telemetry.Runner\DickinsonBros.Telemetry.Runner.csproj", "{D27C6863-0199-4ABB-A08B-B3AEC36CD139}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DickinsonBros.Telemetry", "Source\DickinsonBros.Telemetry\DickinsonBros.Telemetry.csproj", "{E2E01B23-3D10-4617-BC1D-77665184A2F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DickinsonBros.Telemetry.Tests", "DickinsonBros.Telemetry.Tests\DickinsonBros.Telemetry.Tests.csproj", "{836E2EBF-9E59-4FF3-B026-3BCCB2030112}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DickinsonBros.Telemetry.Tests", "Tests\DickinsonBros.Telemetry.Tests\DickinsonBros.Telemetry.Tests.csproj", "{43BDB7BE-A402-44FE-8B34-8F1D3025E4A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DickinsonBros.Telemetry.Runner", "Runner\DickinsonBros.Telemetry.Runner\DickinsonBros.Telemetry.Runner.csproj", "{1395696D-BDD7-4463-B1FA-AC03DA453F28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,33 +31,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6A4775D1-2744-4DD3-8457-CA77E35C7C09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A4775D1-2744-4DD3-8457-CA77E35C7C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A4775D1-2744-4DD3-8457-CA77E35C7C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A4775D1-2744-4DD3-8457-CA77E35C7C09}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DBA42AB-5FEE-4AC0-9EF4-F9AC92396A65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DBA42AB-5FEE-4AC0-9EF4-F9AC92396A65}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DBA42AB-5FEE-4AC0-9EF4-F9AC92396A65}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{5DBA42AB-5FEE-4AC0-9EF4-F9AC92396A65}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DBA42AB-5FEE-4AC0-9EF4-F9AC92396A65}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DBA42AB-5FEE-4AC0-9EF4-F9AC92396A65}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{D27C6863-0199-4ABB-A08B-B3AEC36CD139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D27C6863-0199-4ABB-A08B-B3AEC36CD139}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D27C6863-0199-4ABB-A08B-B3AEC36CD139}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D27C6863-0199-4ABB-A08B-B3AEC36CD139}.Release|Any CPU.Build.0 = Release|Any CPU
-		{836E2EBF-9E59-4FF3-B026-3BCCB2030112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{836E2EBF-9E59-4FF3-B026-3BCCB2030112}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{836E2EBF-9E59-4FF3-B026-3BCCB2030112}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{836E2EBF-9E59-4FF3-B026-3BCCB2030112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2E01B23-3D10-4617-BC1D-77665184A2F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2E01B23-3D10-4617-BC1D-77665184A2F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2E01B23-3D10-4617-BC1D-77665184A2F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2E01B23-3D10-4617-BC1D-77665184A2F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43BDB7BE-A402-44FE-8B34-8F1D3025E4A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43BDB7BE-A402-44FE-8B34-8F1D3025E4A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43BDB7BE-A402-44FE-8B34-8F1D3025E4A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43BDB7BE-A402-44FE-8B34-8F1D3025E4A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1395696D-BDD7-4463-B1FA-AC03DA453F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1395696D-BDD7-4463-B1FA-AC03DA453F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1395696D-BDD7-4463-B1FA-AC03DA453F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1395696D-BDD7-4463-B1FA-AC03DA453F28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6A4775D1-2744-4DD3-8457-CA77E35C7C09} = {A1345DEB-396C-4CA1-91CE-FC26C27AF34F}
-		{5DBA42AB-5FEE-4AC0-9EF4-F9AC92396A65} = {54D8D43D-2E94-40EB-8E54-786A24ABCC7D}
-		{D27C6863-0199-4ABB-A08B-B3AEC36CD139} = {514B48C0-23A5-456F-9074-8DB3AF3E3C9A}
-		{836E2EBF-9E59-4FF3-B026-3BCCB2030112} = {A1345DEB-396C-4CA1-91CE-FC26C27AF34F}
+		{E2E01B23-3D10-4617-BC1D-77665184A2F2} = {1955151E-9B12-4C2D-A56C-49B0DEB588DF}
+		{43BDB7BE-A402-44FE-8B34-8F1D3025E4A8} = {C5AB1092-C81A-4BCE-B19A-88CDC2C2694A}
+		{1395696D-BDD7-4463-B1FA-AC03DA453F28} = {3A79C627-CEF4-4B50-902E-91501E562EFD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64126D19-C9E4-47AD-A316-C7E418D221CC}

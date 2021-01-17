@@ -35,8 +35,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DickinsonBros.Telemetry\DickinsonBros.Telemetry.csproj" />
-  </ItemGroup>
-  
 </Project>
