@@ -3,34 +3,34 @@ trigger:
          include:
          - master
     paths:
-          exclude:
-          - README.md
-          - Scripts/*
+        include:
+        - Source/*
 pr: none
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  NugetFeed: 'https://api.nuget.org/v3/index.json'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: UseDotNet@2
+  displayName: Install .Net SDK 3.1.x
   inputs:
-    restoreSolution: '$(solution)'
-
+    packageType: 'sdk'
+    version: '3.1.x'
+    
 - task: DotNetCoreCLI@2
+  displayName: Build Source And Tests - Release
   inputs:
     command: 'build'
-    projects: '**/*.csproj'
-    configuration: '$(buildConfiguration)'
+    arguments: '--configuration $(buildConfiguration)'
+    projects: |
+     **/Source/*/*.csproj
+     **/Tests/*/*.csproj
 
 - task: VSTest@2
+  displayName: Run Unit Tests
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
@@ -39,17 +39,19 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     codeCoverageEnabled: true
-    runSettingsFile: 'DickinsonBros.Telemetry.runsettings'
+    runSettingsFile: '$(runSettingsFile)'
 
 - task: DotNetCoreCLI@2
+  displayName: Pack Source - Release
   inputs:
     command: 'pack'
-    projects: '**/*.csproj'
-    configuration: '$(buildConfiguration)'
-
+    projects: '**/Source/*/*.csproj'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(buildConfiguration)'
+    
 - task: PublishBuildArtifacts@1
+  displayName: Publish ArtifactStagingDirectory
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
-

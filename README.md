@@ -4,10 +4,9 @@
 
 A Telemetry service
 
-Features
-* Captures Telemetry (Name, ElapsedMilliseconds, TelemetryType, TelemetryState, DateTime)
-* Sends Telemetry to SQL Tables every 30 seconds in bulk inserts.
-* Flush Method OR Application Lifetime (ApplicationStopping) - To clear all existing logs
+      Features
+      * Captures Telemetry (Name, ElapsedMilliseconds, TelemetryType, TelemetryState, DateTime)
+      * Sends Telemetry Event
 
 <h2>Example Usage</h2>
 
@@ -17,14 +16,8 @@ Features
     {
         telemetryService.Insert(GenerateTelemetry());
     }
-
-    Console.WriteLine("Flush Telemetry");
-    await telemetryService.FlushAsync().ConfigureAwait(false);
 ```
 
-    Insert API Telemetry (50 Times)
-    Flush Telemetry
+![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/master/readme/TelemetrySQL.PNG)
 
-![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/develop/TelemetrySQL.PNG)
-
-[Sample Runner](https://github.com/msdickinson/DickinsonBros./tree/master/DickinsonBros.Telemtry.Runner)
+[Sample Runner](https://github.com/msdickinson/DickinsonBros./tree/master/Runner/DickinsonBros.Telemtry.Runner)
