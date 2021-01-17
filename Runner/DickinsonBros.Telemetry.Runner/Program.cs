@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace DickinsonBros.Telemetry.Runner
 {
@@ -33,15 +35,18 @@ namespace DickinsonBros.Telemetry.Runner
                 {
                     var telemetryService = provider.GetRequiredService<ITelemetryService>();
                     var hostApplicationLifetime = provider.GetService<IHostApplicationLifetime>();
+
+                    telemetryService.NewTelemetryEvent += (telemetryData) => {
+                        Console.WriteLine("NewTelemetryEvent");
+                        Console.WriteLine(JsonSerializer.Serialize(telemetryData));
+                        Console.WriteLine();
+                    };
+
                     Console.WriteLine("Insert API Telemetry (50 Times)");
                     for (int i = 0; i < 50; i++)
                     {
                         telemetryService.Insert(GenerateTelemetry());
                     }
-
-                    Console.WriteLine("Flush Telemetry");
-
-                    //await telemetryService.FlushAsync().ConfigureAwait(false);
 
                     hostApplicationLifetime.StopApplication();
                 }

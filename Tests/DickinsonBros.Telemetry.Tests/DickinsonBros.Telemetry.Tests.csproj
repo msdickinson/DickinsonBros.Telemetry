@@ -7,15 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\**" />
-    <Compile Remove="Services\SQL\**" />
-    <EmbeddedResource Remove="Models\**" />
-    <EmbeddedResource Remove="Services\SQL\**" />
-    <None Remove="Models\**" />
-    <None Remove="Services\SQL\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="DickinsonBros.Test" Version="1.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
@@ -29,6 +20,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Source\DickinsonBros.Telemetry\DickinsonBros.Telemetry.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   
 </Project>

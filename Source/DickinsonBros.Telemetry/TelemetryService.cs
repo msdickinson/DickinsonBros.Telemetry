@@ -3,6 +3,7 @@ using DickinsonBros.Telemetry.Abstractions.Models;
 using DickinsonBros.Telemetry.Models;
 using Microsoft.Extensions.Options;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DickinsonBros.Telemetry
 {
@@ -20,6 +21,7 @@ namespace DickinsonBros.Telemetry
 
         public delegate void NewTelemetryEventHandler(TelemetryData telemetryData);
         event ITelemetryService.NewTelemetryEventHandler NewTelemetryEvent;
+        [ExcludeFromCodeCoverage]
         event ITelemetryService.NewTelemetryEventHandler ITelemetryService.NewTelemetryEvent
         {
             add => NewTelemetryEvent += value;
