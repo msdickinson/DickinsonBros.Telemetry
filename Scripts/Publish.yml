@@ -45,9 +45,10 @@ steps:
   displayName: Pack Source - Release
   inputs:
     command: 'pack'
-    projects: '**/Source/*/*.csproj'
+    packagesToPack: '**/Source/*/*.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     arguments: '--configuration $(buildConfiguration)'
+    custom: pack
     
 - task: PublishBuildArtifacts@1
   displayName: Publish ArtifactStagingDirectory
