@@ -7,14 +7,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 Source", "1 Source", "{19
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 Tests", "2 Tests", "{C5AB1092-C81A-4BCE-B19A-88CDC2C2694A}"
 	ProjectSection(SolutionItems) = preProject
-		Tests\DickinsonBros.Telemetry.runsettings = Tests\DickinsonBros.Telemetry.runsettings
+		Tests\CodeCoverage.runsettings = Tests\CodeCoverage.runsettings
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 Runner", "3 Runner", "{3A79C627-CEF4-4B50-902E-91501E562EFD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 Scripts", "4 Scripts", "{0076EC0F-FEED-443F-A931-039C3370F985}"
 	ProjectSection(SolutionItems) = preProject
-		Scripts\Prerelease.DickinsonBros.Telemetry.ps1 = Scripts\Prerelease.DickinsonBros.Telemetry.ps1
+		Scripts\PackagePrerelease.ps1 = Scripts\PackagePrerelease.ps1
 		Scripts\Publish.yml = Scripts\Publish.yml
 		Scripts\Test.yml = Scripts\Test.yml
 	EndProjectSection
