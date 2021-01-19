@@ -37,4 +37,4 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     codeCoverageEnabled: true
-    runSettingsFile: '$(runSettingsFile)'
+    runSettingsFile: 'Tests/CodeCoverage.runsettings'

@@ -39,13 +39,13 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     codeCoverageEnabled: true
-    runSettingsFile: '$(runSettingsFile)'
+    runSettingsFile: 'Tests/CodeCoverage.runsettings'
 
 - task: DotNetCoreCLI@2
   displayName: Pack Source - Release
   inputs:
     command: 'pack'
-    projects: '**/Source/*/*.csproj'
+    packagesToPack: '**/Source/*/*.csproj'
     packDirectory: '$(Build.ArtifactStagingDirectory)'
     arguments: '--configuration $(buildConfiguration)'
     
