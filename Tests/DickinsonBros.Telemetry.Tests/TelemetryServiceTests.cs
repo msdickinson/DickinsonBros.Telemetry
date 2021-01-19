@@ -1,7 +1,7 @@
 using DickinsonBros.Telemetry.Abstractions;
 using DickinsonBros.Telemetry.Abstractions.Models;
 using DickinsonBros.Telemetry.Models;
-using DickinsonBros.Test;
+using DickinsonBros.UnitTest;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;

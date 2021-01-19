@@ -1,6 +1,6 @@
 ﻿using DickinsonBros.Telemetry.Configurators;
 using DickinsonBros.Telemetry.Models;
-using DickinsonBros.Test;
+using DickinsonBros.UnitTest;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
