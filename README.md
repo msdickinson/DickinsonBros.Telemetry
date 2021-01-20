@@ -27,4 +27,4 @@ A Telemetry service
                     
 ```
 
-[Sample Runner](/Runner/DickinsonBros.Telemtry.Runner)
+[Sample Runner](/Runner/DickinsonBros.Telemetry.Runner)
