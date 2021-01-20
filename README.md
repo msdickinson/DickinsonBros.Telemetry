@@ -5,19 +5,26 @@
 A Telemetry service
 
       Features
-      * Captures Telemetry (Name, ElapsedMilliseconds, TelemetryType, TelemetryState, DateTime)
-      * Sends Telemetry Event
+      * Vaildates telemetry
+      * Sends telemetry event
 
 <h2>Example Usage</h2>
 
 ```C#
+    //(Subscriber) designed for other packages to use as a sink
+    telemetryService.NewTelemetryEvent += (telemetryData) => {
+      Console.WriteLine("NewTelemetryEvent");
+      Console.WriteLine(JsonSerializer.Serialize(telemetryData));
+      Console.WriteLine();
+    };
+    
+    //(Publisher) Sends telemetry event
     Console.WriteLine("Insert API Telemetry (50 Times)");
     for (int i = 0; i < 50; i++)
     {
         telemetryService.Insert(GenerateTelemetry());
     }
+                    
 ```
 
-![Alt text](https://raw.githubusercontent.com/msdickinson/DickinsonBros.Telemetry/master/readme/TelemetrySQL.PNG)
-
-[Sample Runner](https://github.com/msdickinson/DickinsonBros./tree/master/Runner/DickinsonBros.Telemtry.Runner)
+[Sample Runner](/Runner/DickinsonBros.Telemtry.Runner)
